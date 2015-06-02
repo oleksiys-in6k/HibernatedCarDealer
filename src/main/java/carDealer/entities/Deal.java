@@ -1,4 +1,4 @@
-package carDealer.Entitys;
+package carDealer.entities;
 
 import javax.persistence.*;
 import java.util.Calendar;

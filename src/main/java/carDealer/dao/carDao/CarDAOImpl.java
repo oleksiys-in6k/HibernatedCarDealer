@@ -1,38 +1,34 @@
 package carDealer.dao.carDao;
 
-import carDealer.Entitys.Car;
-import carDealer.util.HibernateUtil;
+import carDealer.entities.Car;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by LEX on 01.06.2015.
- */
+@Transactional
 public class CarDAOImpl implements CarDAO {
+
+    SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     public void addCar(Car car) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
+            Session session = getSession();
             session.save(car);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println("I/O Error from CarDAOImpl");
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
     }
 
     public void updateCar(Car car) throws SQLException {
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
+
+            session = getSession();
+
+
             session.update(car);
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -44,11 +40,15 @@ public class CarDAOImpl implements CarDAO {
         }
     }
 
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
     public Car getCarById(Long id) throws SQLException {
         Session session = null;
         Car car = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = getSession();
             car = (Car) session.load(Car.class, id);
         } catch (Exception e) {
             System.out.println("I/O Error from getCarById");
@@ -60,27 +60,16 @@ public class CarDAOImpl implements CarDAO {
         return car;
     }
 
-    public List getAllCars() throws SQLException {
-        Session session = null;
-        List<Car> cars = new ArrayList<Car>();
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            cars = session.createCriteria(Car.class).list();
-        } catch (Exception e) {
-            System.out.println("I/O Error from getAllCars");
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return cars;
+    @SuppressWarnings("unchecked")
+    public List<Car> getAllCars() throws SQLException {
+        Session session = getSession();
+        return session.createCriteria(Car.class).list();
     }
 
     public void deleteCar(Car car) throws SQLException {
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
+            session = getSession();
             session.delete(car);
             session.getTransaction().commit();
         } catch (Exception e) {

@@ -1,6 +1,6 @@
 package carDealer.dao.dealDAO;
 
-import carDealer.Entitys.Deal;
+import carDealer.entities.Deal;
 import carDealer.util.HibernateUtil;
 import org.hibernate.Session;
 
@@ -43,10 +43,9 @@ public class DealDAOImpl implements DealDAO {
                 session.close();
             }
         }
-
     }
 
-    public List getAllDeals() throws SQLException {
+    public List <Deal>  getAllDeals() throws SQLException {
         Session session = null;
         List<Deal> deals = new ArrayList<Deal>();
         try {
@@ -76,6 +75,21 @@ public class DealDAOImpl implements DealDAO {
                 session.close();
             }
         }
+    }
 
+    public Deal getDealById(Long id) throws SQLException {
+        Session session = null;
+        Deal deal = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            deal = (Deal) session.load(Deal.class, id);
+        } catch (Exception e) {
+            System.out.println("I/O Error from getDealById");
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return deal;
     }
 }

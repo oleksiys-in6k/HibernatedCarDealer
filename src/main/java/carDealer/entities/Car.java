@@ -1,4 +1,4 @@
-package carDealer.Entitys;
+package carDealer.entities;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,5 +39,15 @@ public class Car {
 
     public double getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "car_id=" + car_id +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

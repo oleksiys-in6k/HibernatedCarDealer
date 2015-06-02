@@ -1,6 +1,6 @@
 package carDealer.dao.sellerDAO;
 
-import carDealer.Entitys.Seller;
+import carDealer.entities.Seller;
 import carDealer.util.HibernateUtil;
 import org.hibernate.Session;
 

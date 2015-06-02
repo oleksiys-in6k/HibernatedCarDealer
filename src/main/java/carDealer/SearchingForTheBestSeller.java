@@ -1,9 +1,11 @@
 package carDealer;
 
-import carDealer.Entitys.Deal;
-import carDealer.Entitys.Seller;
+import carDealer.entities.Deal;
+import carDealer.entities.Seller;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class SearchingForTheBestSeller {
 

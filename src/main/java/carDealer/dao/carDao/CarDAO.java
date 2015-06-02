@@ -1,6 +1,6 @@
 package carDealer.dao.carDao;
 
-import carDealer.Entitys.Car;
+import carDealer.entities.Car;
 
 import java.sql.SQLException;
 import java.util.List;
