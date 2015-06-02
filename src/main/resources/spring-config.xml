@@ -27,6 +27,14 @@
               <property name="sessionFactory" ref="sessionFactory"/>
        </bean>
 
+       <bean class="carDealer.dao.sellerDAO.SellerDAOImpl">
+              <property name="sessionFactory" ref="sessionFactory"/>
+       </bean>
+
+       <bean class="carDealer.dao.dealDAO.DealDAOImpl">
+              <property name="sessionFactory" ref="sessionFactory"/>
+       </bean>
+
        <tx:annotation-driven/>
 
        <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">

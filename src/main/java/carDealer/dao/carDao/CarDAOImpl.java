@@ -17,47 +17,23 @@ public class CarDAOImpl implements CarDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    public void addCar(Car car) throws SQLException {
-            Session session = getSession();
-            session.save(car);
-    }
-
-    public void updateCar(Car car) throws SQLException {
-        Session session = null;
-        try {
-
-            session = getSession();
-
-
-            session.update(car);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println("I/O Error from UpdateCar");
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-    }
-
     private Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
+    public void addCar(Car car) throws SQLException {
+        Session session = getSession();
+        session.save(car);
+    }
+
+    public void updateCar(Car car) throws SQLException {
+        Session session = getSession();
+        session.update(car);
+    }
+
     public Car getCarById(Long id) throws SQLException {
-        Session session = null;
-        Car car = null;
-        try {
-            session = getSession();
-            car = (Car) session.load(Car.class, id);
-        } catch (Exception e) {
-            System.out.println("I/O Error from getCarById");
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return car;
+        Session session = getSession();
+        return (Car) session.load(Car.class, id);
     }
 
     @SuppressWarnings("unchecked")
@@ -67,18 +43,7 @@ public class CarDAOImpl implements CarDAO {
     }
 
     public void deleteCar(Car car) throws SQLException {
-        Session session = null;
-        try {
-            session = getSession();
-            session.delete(car);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println("I/O Error from deleteCar");
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-
+        Session session = getSession();
+        session.delete(car);
     }
 }

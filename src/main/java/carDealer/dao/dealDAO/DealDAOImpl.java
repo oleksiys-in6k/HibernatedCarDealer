@@ -1,95 +1,48 @@
 package carDealer.dao.dealDAO;
 
 import carDealer.entities.Deal;
-import carDealer.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by LEX on 01.06.2015.
- */
+@Transactional
 public class DealDAOImpl implements DealDAO {
 
+    SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
     public void addDeal(Deal deal) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(deal);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println("I/O Error from addDeal");
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
+        Session session = getSession();
+        session.save(deal);
     }
 
     public void updateDeal(Deal deal) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(deal);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println("I/O Error from updateDeal");
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
+        Session session = getSession();
+        session.update(deal);
     }
 
     public List <Deal>  getAllDeals() throws SQLException {
-        Session session = null;
-        List<Deal> deals = new ArrayList<Deal>();
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            deals = session.createCriteria(Deal.class).list();
-        } catch (Exception e) {
-            System.out.println("I/O Error from getAllDeals");
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return deals;
+        Session session = getSession();
+        return session.createCriteria(Deal.class).list();
     }
 
     public void deleteDeal(Deal deal) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(deal);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println("I/O Error from deleteDeal");
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
+        Session session = getSession();
+        session.delete(deal);
     }
 
     public Deal getDealById(Long id) throws SQLException {
-        Session session = null;
-        Deal deal = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            deal = (Deal) session.load(Deal.class, id);
-        } catch (Exception e) {
-            System.out.println("I/O Error from getDealById");
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return deal;
+        Session session = getSession();
+        return (Deal) session.load(Deal.class, id);
     }
 }
